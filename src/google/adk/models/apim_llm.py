@@ -78,4 +78,5 @@ class ApimLlm(Gemini):
     return Client(
         http_options=http_options,
         vertexai=False,
+        api_key="dummy",  # Required but not used since we use custom headers
     )
