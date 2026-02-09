@@ -15,6 +15,7 @@
 """Defines the interface to support a model."""
 
 from .apigee_llm import ApigeeLlm
+from .apim_llm import ApimLlm
 from .base_llm import BaseLlm
 from .gemma_llm import Gemma
 from .google_llm import Gemini
@@ -23,6 +24,7 @@ from .llm_response import LlmResponse
 from .registry import LLMRegistry
 
 __all__ = [
+    'ApimLlm',
     'BaseLlm',
     'Gemini',
     'Gemma',
