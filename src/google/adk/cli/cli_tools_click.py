@@ -645,14 +645,6 @@ def cli_run(
   """
   logs.log_to_tmp_folder()
 
-  # Validation warning for memory_service_uri (not supported for adk run)
-  if memory_service_uri:
-    click.secho(
-        "WARNING: --memory_service_uri is not supported for adk run.",
-        fg="yellow",
-        err=True,
-    )
-
   agent_parent_folder = os.path.dirname(agent)
   agent_folder_name = os.path.basename(agent)
 
@@ -666,6 +658,7 @@ def cli_run(
           session_id=session_id,
           session_service_uri=session_service_uri,
           artifact_service_uri=artifact_service_uri,
+          memory_service_uri=memory_service_uri,
           use_local_storage=use_local_storage,
       )
   )
@@ -1419,6 +1412,14 @@ def cli_web(
 @fast_api_common_options()
 @adk_services_options(default_use_local_storage=True)
 @deprecated_adk_services_options()
+@click.option(
+    "--auto_create_session",
+    is_flag=True,
+    default=False,
+    help=(
+        "Automatically create a session if it doesn't exist when calling /run."
+    ),
+)
 def cli_api_server(
     agents_dir: str,
     eval_storage_uri: Optional[str] = None,
@@ -1439,6 +1440,7 @@ def cli_api_server(
     a2a: bool = False,
     reload_agents: bool = False,
     extra_plugins: Optional[list[str]] = None,
+    auto_create_session: bool = False,
 ):
   """Starts a FastAPI server for agents.
 
@@ -1471,6 +1473,7 @@ def cli_api_server(
           url_prefix=url_prefix,
           reload_agents=reload_agents,
           extra_plugins=extra_plugins,
+          auto_create_session=auto_create_session,
       ),
       host=host,
       port=port,
